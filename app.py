@@ -5,37 +5,54 @@ from flask_sqlalchemy import SQLAlchemy
 import stripe
 from dotenv import load_dotenv
 
+# Ortam değişkenlerini yükle
 load_dotenv()
 
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 
+# Stripe API anahtarı
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
+# Veritabanı ayarları
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# MODELLER
 class Coach(db.Model):
-    id           = db.Column(db.Integer, primary_key=True)
-    name         = db.Column(db.String(100), nullable=False)
-    game         = db.Column(db.String(50), nullable=False)
-    level        = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    game = db.Column(db.String(50), nullable=False)
+    level = db.Column(db.String(50), nullable=False)
     availability = db.Column(db.String(500), nullable=False)
-    contact      = db.Column(db.String(200), nullable=False)
+    contact = db.Column(db.String(200), nullable=False)
 
 class Order(db.Model):
-    id            = db.Column(db.Integer, primary_key=True)
-    session_id    = db.Column(db.String(200), unique=True, nullable=False)
-    game          = db.Column(db.String(50), nullable=False)
-    package       = db.Column(db.String(50), nullable=False)
-    time_slot     = db.Column(db.String(50), nullable=False)
-    coach_id      = db.Column(db.Integer, db.ForeignKey('coach.id'))
-    coach         = db.relationship('Coach')
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(200), unique=True, nullable=False)
+    game = db.Column(db.String(50), nullable=False)
+    package = db.Column(db.String(50), nullable=False)
+    time_slot = db.Column(db.String(50), nullable=False)
+    coach_id = db.Column(db.Integer, db.ForeignKey('coach.id'))
+    coach = db.relationship('Coach')
 
-@app.before_first_request
-def setup_db():
-    db.create_all()
+# ZAMAN DİLİMLERİ
+TIME_SLOTS = [
+    "16:00-17:00", "17:00-18:00", "18:00-19:00",
+    "19:00-20:00", "20:00-21:00", "21:00-22:00"
+]
+
+# OYUNLAR VE PAKETLER
+games = ["Valorant", "CS2", "LoL"]
+packages = [
+    {"name": "Basic",    "price_usd": 10, "features": ["Live Session"]},
+    {"name": "Standard", "price_usd": 25, "features": ["Live Session", "PDF Guide"]},
+    {"name": "Pro",      "price_usd": 25, "features": ["Live Session", "PDF Guide", "Private Coaching"]}
+]
+
+# KOÇLARI VERİTABANINA EKLE (eğer yoksa)
+def seed_coaches():
     if not Coach.query.first():
         sample_coaches = [
             Coach(name="Alex",   game="Valorant", level="Basic",    availability="18:00-19:00,20:00-21:00", contact="discord.gg/alex"),
@@ -51,28 +68,17 @@ def setup_db():
         db.session.bulk_save_objects(sample_coaches)
         db.session.commit()
 
-TIME_SLOTS = [
-    "16:00-17:00", "17:00-18:00", "18:00-19:00",
-    "19:00-20:00", "20:00-21:00", "21:00-22:00"
-]
-
-games = ["Valorant", "CS2", "LoL"]
-packages = [
-    {"name": "Basic",    "price_usd": 10, "features": ["Live Session"]},
-    {"name": "Standard", "price_usd": 25, "features": ["Live Session", "PDF Guide"]},
-    {"name": "Pro",      "price_usd": 25, "features": ["Live Session", "PDF Guide", "Private Coaching"]}
-]
-
+# ANASAYFA
 @app.route("/")
 def index():
     return render_template("index.html", games=games, packages=packages, time_slots=TIME_SLOTS)
 
+# CHECKOUT
 @app.route("/checkout", methods=["POST"])
 def checkout():
-    game      = request.form.get("game")
-    pkg       = request.form.get("package")
+    game = request.form.get("game")
+    pkg = request.form.get("package")
     time_slot = request.form.get("time_slot")
-    app.logger.debug(f"Checkout: {game}, {pkg}, time={time_slot}")
 
     package = next((p for p in packages if p["name"] == pkg), None)
     if not game or not package or time_slot not in TIME_SLOTS:
@@ -99,6 +105,7 @@ def checkout():
 
     return redirect(session.url, code=303)
 
+# BAŞARILI ÖDEME
 @app.route("/success")
 def success():
     session_id = request.args.get("session_id")
@@ -109,9 +116,14 @@ def success():
 
     return render_template("success.html", coach_list=available, time_slot=order.time_slot)
 
+# İPTAL
 @app.route("/cancel")
 def cancel():
     return render_template("cancel.html")
 
+# UYGULAMA BAŞLATILDIĞINDA DB OLUŞTUR VE KOÇLARI EKLE
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        seed_coaches()
     app.run(host="0.0.0.0", debug=True)
