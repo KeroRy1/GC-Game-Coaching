@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: english-coaching
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: STRIPE_SECRET_KEY
+        value: sk_live_your_real_secret_key_here
