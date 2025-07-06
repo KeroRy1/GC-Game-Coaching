@@ -35,6 +35,25 @@
         </div>
         {% endfor %}
     </div>
-
 </form>
+
+<!-- Geri Bildirim Butonu -->
+<button id="feedback-btn" onclick="document.getElementById('feedback-modal').style.display='block'">💬 Geri Bildirim Gönder</button>
+
+<!-- Geri Bildirim Formu (Modal) -->
+<div id="feedback-modal" class="modal">
+    <form class="modal-content" method="POST" action="/submit-feedback">
+        <textarea name="comment" placeholder="Yorumunuzu yazın..." required></textarea>
+        <button type="submit">Gönder</button>
+        <button type="button" onclick="document.getElementById('feedback-modal').style.display='none'">Kapat</button>
+    </form>
+</div>
+
+<!-- Gelen Geri Bildirimler -->
+<div class="feedback-list">
+    <h4>🗨️ Gelen Geri Bildirimler</h4>
+    {% for f in feedbacks %}
+    <div class="feedback-item">{{ f }}</div>
+    {% endfor %}
+</div>
 {% endblock %}
