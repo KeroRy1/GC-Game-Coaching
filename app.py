@@ -60,6 +60,15 @@ def success():
 @app.route("/cancel")
 def cancel():
     return render_template("cancel.html")
+    
+feedbacks = []
+
+@app.route("/submit-feedback", methods=["POST"])
+def submit_feedback():
+    comment = request.form.get("comment")
+    if comment:
+        feedbacks.append(comment)
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
