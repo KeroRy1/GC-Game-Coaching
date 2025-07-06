@@ -15,7 +15,7 @@
     <div class="form-group">
         <label for="time">🕒 Saat Seçin:</label>
         <select name="time" id="time" required>
-            {% for hour in range(8, 24) %}
+            {% for hour in range(8, 19) %}
             <option value="{{ "%02d:00" % hour }}">{{ "%02d:00" % hour }}</option>
             {% endfor %}
         </select>
