@@ -17,8 +17,8 @@ packages = [
 @app.route("/")
 def index():
     publishable_key = os.environ.get("STRIPE_PUBLISHABLE_KEY")
-    return render_template("index.html", games=games, packages=packages, publishable_key=publishable_key)
-
+    return render_template("index.html", games=games, packages=packages, publishable_key=publishable_key, feedbacks=feedbacks)
+    
 @app.route("/checkout", methods=["POST"])
 def checkout():
     game = request.form.get("game")
