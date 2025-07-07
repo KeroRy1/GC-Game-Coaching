@@ -165,6 +165,11 @@ def coach_detail(coach_id):
 def google_verify():
     return send_from_directory('static', 'googleaa1a9047867b85a7.html')
 
+
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory('static', 'sitemap.xml')
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
 
