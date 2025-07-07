@@ -161,6 +161,10 @@ def coach_detail(coach_id):
         return render_template("error.html", message="Koç bulunamadı."), 404
     return render_template("coach_detail.html", coach=coach)
 
+@app.route('/googleaa1a9047867b85a7.html')
+def google_verify():
+    return send_from_directory('static', 'googleaa1a9047867b85a7.html')
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
 
