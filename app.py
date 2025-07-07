@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template, request, redirect, url_for
 import iyzipay
 
@@ -8,7 +9,7 @@ app = Flask(__name__)
 options = {
     'api_key': os.environ.get('IYZICO_API_KEY', 'sandbox_api_key'),
     'secret_key': os.environ.get('IYZICO_SECRET_KEY', 'sandbox_secret_key'),
-    'base_url': 'https://sandbox-api.iyzipay.com'  # canlıda https://api.iyzipay.com olmalı
+    'base_url': 'https://sandbox-api.iyzipay.com'
 }
 
 games = ["Valorant", "CS2", "LoL"]
@@ -20,6 +21,13 @@ packages = [
 ]
 
 feedbacks = []
+
+# Koç profilleri
+coaches = [
+    {"id": 1, "name": "Ahmet Yılmaz", "game": "Valorant", "level": "Pro"},
+    {"id": 2, "name": "Elif Demir", "game": "LoL", "level": "Orta"},
+    {"id": 3, "name": "Can Kaya", "game": "CS2", "level": "Oyun Ustası"}
+]
 
 @app.route("/")
 def index():
@@ -33,7 +41,6 @@ def checkout():
 
     package = next((p for p in packages if p["name"] == pkg), None)
 
-    # Basit validasyon
     if not game or not package or not time:
         return render_template("error.html", message="Geçersiz seçim. Lütfen tekrar deneyiniz."), 400
     try:
@@ -102,7 +109,8 @@ def checkout():
     checkout_form_initialize_request.set_basket_items(request_data['basketItems'])
 
     try:
-        checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
+        raw_checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
+        checkout_form = json.loads(raw_checkout_form.read().decode('utf-8'))
 
         if checkout_form['status'] == 'success':
             return redirect(checkout_form['paymentPageUrl'])
@@ -121,7 +129,8 @@ def payment_result():
 
     request_obj = iyzipay.CheckoutFormResultRequest()
     request_obj.set_token(token)
-    result = iyzipay.CheckoutForm().retrieve(request_obj, options)
+    result_raw = iyzipay.CheckoutForm().retrieve(request_obj, options)
+    result = json.loads(result_raw.read().decode('utf-8'))
 
     if result['status'] == 'success':
         return render_template("success.html", details=result)
@@ -134,6 +143,17 @@ def submit_feedback():
     if comment:
         feedbacks.append(comment)
     return redirect(url_for("index"))
+
+@app.route("/coaches")
+def coach_list():
+    return render_template("coaches.html", coaches=coaches)
+
+@app.route("/coach/<int:coach_id>")
+def coach_detail(coach_id):
+    coach = next((c for c in coaches if c["id"] == coach_id), None)
+    if not coach:
+        return render_template("error.html", message="Koç bulunamadı."), 404
+    return render_template("coach_detail.html", coach=coach)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
