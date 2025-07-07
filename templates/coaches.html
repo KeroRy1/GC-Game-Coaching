@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Koç Profilleri</title>
+</head>
+<body>
+    <h1>Koç Profilleri</h1>
+    <ul>
+        {% for coach in coaches %}
+            <li><a href="{{ url_for('coach_detail', coach_id=coach.id) }}">{{ coach.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <a
