@@ -103,11 +103,17 @@ def checkout():
 
     checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
 
+   try:
+    checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
+
     if checkout_form['status'] == 'success':
-        # Kullanıcıyı iyzico ödeme sayfasına yönlendir
         return redirect(checkout_form['paymentPageUrl'])
     else:
-        return f"Ödeme oluşturulamadı: {checkout_form.get('errorMessage', 'Bilinmeyen hata')}", 400
+        return render_template("error.html", message="Ödeme başlatılamadı. Lütfen daha sonra tekrar deneyiniz."), 400
+
+except Exception as e:
+    print("Hata:", e)  # render için loglamak iyi olur
+    return render_template("error.html", message="Bir hata oluştu. API anahtarı eksik veya bağlantı kurulamadı."), 500
 
 @app.route("/payment-result")
 def payment_result():
