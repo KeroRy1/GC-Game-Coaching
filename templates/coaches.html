@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Koç Profilleri</title>
-</head>
-<body>
-    <h1>Koç Profilleri</h1>
-    <ul>
-        {% for coach in coaches %}
-            <li><a href="{{ url_for('coach_detail', coach_id=coach.id) }}">{{ coach.name }}</a></li>
-        {% endfor %}
-    </ul>
-    <a
+{% extends 'base.html' %}
+{% block title %}Koç Profilleri{% endblock %}
+{% block content %}
+<h2>👥 Koç Profilleri</h2>
+<div class="coach-grid">
+    {% for coach in coaches %}
+    <a href="{{ url_for('coach_detail', coach_id=coach.id) }}" class="coach-card">
+        <h3>{{ coach.name }}</h3>
+        <p>🎮 {{ coach.game }}</p>
+        <p>⭐ Seviye: {{ coach.level }}</p>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
