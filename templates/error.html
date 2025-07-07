@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Hata{% endblock %}
+{% block content %}
+<h2>😢 Üzgünüz!</h2>
+<p>{{ message or "Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz." }}</p>
+<a href="{{ url_for('index') }}">Anasayfaya Dön</a>
+{% endblock %}
