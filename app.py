@@ -144,17 +144,6 @@ def submit_feedback():
         feedbacks.append(comment)
     return redirect(url_for("index"))
 
-@app.route("/coaches")
-def coach_list():
-    return render_template("coaches.html", coaches=coaches)
-
-@app.route("/coach/<int:coach_id>")
-def coach_detail(coach_id):
-    coach = next((c for c in coaches if c["id"] == coach_id), None)
-    if not coach:
-        return render_template("error.html", message="Koç bulunamadı."), 404
-    return render_template("coach_detail.html", coach=coach)
-
 coaches = [
     {"id": 1, "name": "Ahmet Yılmaz", "game": "Valorant", "level": "Pro"},
     {"id": 2, "name": "Elif Demir", "game": "LoL", "level": "Orta"},
