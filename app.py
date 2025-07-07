@@ -35,15 +35,15 @@ def checkout():
 
     # Basit validasyon
     if not game or not package or not time:
-        return "Geçersiz seçim.", 400
+        return render_template("error.html", message="Geçersiz seçim. Lütfen tekrar deneyiniz."), 400
     try:
         hour = int(time.split(":")[0])
         if hour < 8:
-            return "Saat 8:00'den önce ders seçilemez.", 400
+            return render_template("error.html", message="Saat 08:00'den önce ders seçilemez."), 400
     except:
-        return "Zaman formatı geçersiz.", 400
+        return render_template("error.html", message="Saat formatı geçersiz."), 400
 
-    conversation_id = "conv_" + os.urandom(8).hex()  # benzersiz ID
+    conversation_id = "conv_" + os.urandom(8).hex()
 
     request_data = {
         'locale': 'tr',
@@ -101,22 +101,17 @@ def checkout():
     checkout_form_initialize_request.set_billing_address(request_data['billingAddress'])
     checkout_form_initialize_request.set_basket_items(request_data['basketItems'])
 
-    checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
-try:
-    checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
+    try:
+        checkout_form = iyzipay.CheckoutForm().create(checkout_form_initialize_request, options)
 
-    if checkout_form['status'] == 'success':
-        return redirect(checkout_form['paymentPageUrl'])
-    else:
-        return render_template("error.html", message="Ödeme başlatılamadı. Lütfen daha sonra tekrar deneyiniz."), 400
+        if checkout_form['status'] == 'success':
+            return redirect(checkout_form['paymentPageUrl'])
+        else:
+            return render_template("error.html", message="Ödeme başlatılamadı. Lütfen daha sonra tekrar deneyiniz."), 400
 
-except Exception as e:
-    print("Hata:", e)
-    return render_template("error.html", message="Bir hata oluştu. API anahtarı eksik veya bağlantı kurulamadı."), 500
-
-except Exception as e:
-    print("Hata:", e)  # render için loglamak iyi olur
-    return render_template("error.html", message="Bir hata oluştu. API anahtarı eksik veya bağlantı kurulamadı."), 500
+    except Exception as e:
+        print("Hata:", e)
+        return render_template("error.html", message="Bir hata oluştu. API anahtarı eksik veya bağlantı kurulamadı."), 500
 
 @app.route("/payment-result")
 def payment_result():
