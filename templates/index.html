@@ -1,46 +1,58 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Oyun Koçluğu</title>
-</head>
-<body>
-    <div style="position: absolute; top: 10px; right: 10px;">
-        <a href="{{ url_for('coach_list') }}">Koç Profilleri</a>
+{% extends 'base.html' %}
+{% block title %}Ana Sayfa{% endblock %}
+{% block content %}
+
+<form id="checkout-form" method="POST" action="/checkout">
+    <div class="form-group">
+        <label for="game">🎮 Oyun Seçin:</label>
+        <select name="game" id="game" required>
+            {% for g in games %}
+            <option value="{{ g }}">{{ g }}</option>
+            {% endfor %}
+        </select>
     </div>
 
-    <h1>Oyun Koçluğu Platformu</h1>
-
-    <form action="/checkout" method="post">
-        <label>Oyun:</label>
-        <select name="game">
-            {% for game in games %}
-                <option value="{{ game }}">{{ game }}</option>
+    <div class="form-group">
+        <label for="time">🕒 Saat Seçin:</label>
+        <select name="time" id="time" required>
+            {% for hour in range(8, 19) %}
+            <option value="{{ "%02d:00" % hour }}">{{ "%02d:00" % hour }}</option>
             {% endfor %}
-        </select><br>
+        </select>
+    </div>
 
-        <label>Paket:</label>
-        <select name="package">
-            {% for package in packages %}
-                <option value="{{ package.name }}">{{ package.name }} - {{ package.price_tl }} TL</option>
-            {% endfor %}
-        </select><br>
-
-        <label>Saat:</label>
-        <input type="time" name="time"><br>
-
-        <button type="submit">Satın Al</button>
-    </form>
-
-    <h2>Geri Bildirimler</h2>
-    <ul>
-        {% for comment in feedbacks %}
-            <li>{{ comment }}</li>
+    <h2>Koçluk Paketleri</h2>
+    <div class="packages">
+        {% for p in packages %}
+        <div class="package">
+            <h3>{{ p.name }} – {{ p.price_tl }} TL</h3>
+            <ul>
+                {% for f in p.features %}
+                <li>{{ f }}</li>
+                {% endfor %}
+            </ul>
+            <button type="submit" name="package" value="{{ p.name }}">Satın Al</button>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
+</form>
 
-    <form action="/submit-feedback" method="post">
-        <textarea name="comment" placeholder="Yorumunuzu yazın..."></textarea><br>
+<button id="feedback-btn" onclick="document.getElementById('feedback-modal').style.display='block'">💬 Geri Bildirim Gönder</button>
+
+<div id="feedback-modal" class="modal">
+    <form class="modal-content" method="POST" action="/submit-feedback">
+        <textarea name="comment" placeholder="Yorumunuzu yazın..." required></textarea>
         <button type="submit">Gönder</button>
+        <button type="button" onclick="document.getElementById('feedback-modal').style.display='none'">Kapat</button>
     </form>
-</body>
-</html>
+</div>
+
+<div class="feedback-list">
+    <h4>🗨️ Gelen Geri Bildirimler</h4>
+    {% for f in feedbacks %}
+    <div class="feedback-item">{{ f }}</div>
+    {% endfor %}
+</div>
+
+{% endblock %}
