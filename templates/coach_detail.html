@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ coach.name }} - Koç Detayı</title>
-</head>
-<body>
-    <h2>{{ coach.name }}</h2>
-    <p><strong>Oyun:</strong> {{ coach.game }}</p>
-    <p><strong>Koçluk Seviyesi:</strong> {{ coach.level }}</p>
-    <a href="{{ url_for('coach_list') }}">← Tüm Koçlar</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}{{ coach.name }}{% endblock %}
+{% block content %}
+<h2>{{ coach.name }}</h2>
+<p><strong>🎮 Oyun:</strong> {{ coach.game }}</p>
+<p><strong>⭐ Koçluk Seviyesi:</strong> {{ coach.level }}</p>
+<a href="{{ url_for('coach_list') }}" class="top-button" style="top: auto; bottom: 20px;">← Tüm Koçlar</a>
+{% endblock %}
