@@ -1,99 +1,132 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
-}
-
+/* Genel Ayarlar */
 body {
-  background-color: #121212;
-  color: #f0f0f0;
-  padding: 20px;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
 .container {
-  max-width: 960px;
-  margin: auto;
+    max-width: 960px;
+    margin: auto;
+    padding: 20px;
 }
 
-h1, h2 {
-  color: #00ccff;
-  margin-bottom: 16px;
+/* Başlık */
+header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #333;
 }
 
-.select-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 30px;
+h1, h2, h3 {
+    color: #ffffff;
 }
 
-.select-group label {
-  font-weight: bold;
+/* Formlar */
+form {
+    margin-top: 20px;
 }
 
-.select-group select {
-  background-color: #1f1f1f;
-  color: white;
-  padding: 10px;
-  border: 1px solid #333;
-  border-radius: 8px;
-  margin-right: 10px;
+.form-group {
+    margin-bottom: 15px;
 }
 
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #bbb;
+}
+
+select, textarea, input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 5px;
+}
+
+/* Paket Kartları */
 .packages {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .package {
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #333;
-  transition: transform 0.2s;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 15px;
+    flex: 1 1 200px;
+    transition: transform 0.2s ease;
 }
 
 .package:hover {
-  transform: scale(1.03);
+    transform: scale(1.03);
+    border-color: #4caf50;
 }
 
 .package h3 {
-  color: #ffa726;
-  margin-bottom: 10px;
+    margin-top: 0;
+    color: #4caf50;
 }
 
 .package ul {
-  list-style: none;
-  margin-bottom: 15px;
-}
-
-.package li {
-  margin-bottom: 5px;
+    padding-left: 20px;
 }
 
 button {
-  background-color: #00ccff;
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 button:hover {
-  background-color: #00b8e6;
+    background-color: #43a047;
 }
 
-footer {
-  margin-top: 40px;
-  text-align: center;
+/* Geri Bildirim */
+#feedback-btn {
+    margin-top: 30px;
+    background-color: #2196f3;
 }
 
-footer a {
-  color: #ffffff;
-  text-decoration: underline;
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #1e1e1e;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #444;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.feedback-list {
+    margin-top: 30px;
+}
+
+.feedback-item {
+    background-color: #2a2a2a;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #4caf50;
+    border-radius: 5px;
 }
