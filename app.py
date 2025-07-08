@@ -44,13 +44,6 @@ def shopier_webhook():
 
     return "ok", 200
 
-from flask import Flask, send_from_directory
-
-app = Flask(__name__)
-
-@app.route('/googleaa1a9047867b85a7.html')
-def google_verification():
-    return send_from_directory('static', 'googleaa1a9047867b85a7.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
