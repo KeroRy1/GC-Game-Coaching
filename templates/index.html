@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Oyun Koçluğu</title>
+    <title>Oyun Koçluğu Platformu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
@@ -12,25 +12,61 @@
             margin: 0;
             padding: 0;
         }
+
         header {
             background-color: #1e1e1e;
             padding: 20px;
             text-align: center;
             font-size: 24px;
             color: #00ff88;
+            font-weight: bold;
         }
+
+        .welcome-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .welcome-section div {
+            flex: 1 1 300px;
+            padding: 10px;
+        }
+
+        .welcome-section h3 {
+            color: #00ff88;
+            font-weight: normal;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .intro-text h2 {
+            color: #00ff88;
+            font-size: 22px;
+        }
+
         .container {
             max-width: 500px;
-            margin: 40px auto;
+            margin: 30px auto 50px;
             background-color: #1a1a1a;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px #00ff88;
         }
+
         label {
             display: block;
             margin: 15px 0 5px;
+            font-weight: bold;
         }
+
         select, input[type="time"] {
             width: 100%;
             padding: 10px;
@@ -39,6 +75,7 @@
             color: #00ff88;
             border: 1px solid #00ff88;
         }
+
         button {
             margin-top: 20px;
             background-color: #00ff88;
@@ -50,9 +87,18 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
+
         button:hover {
             background-color: #00cc66;
+        }
+
+        @media (max-width: 600px) {
+            .welcome-section {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -61,6 +107,19 @@
 <header>
     🕹 Oyun Koçluğu Platformu
 </header>
+
+<div class="welcome-section">
+    <div class="left">
+        <h3>Harika doğru yere geldin, artık en iyi seviyedeki koçlukları alabileceksin.</h3>
+    </div>
+    <div class="right">
+        <h3>Koçluk Platformumuzda çeşitli oyunların koçluklarını veririz.</h3>
+    </div>
+</div>
+
+<div class="intro-text">
+    <h2>Oyun Koçluğu Platformundasın, Hoşgeldin</h2>
+</div>
 
 <div class="container">
     <form action="/purchase" method="POST">
