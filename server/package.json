@@ -1,0 +1,23 @@
+{
+  "name": "game-coaching-backend",
+  "version": "1.0.0",
+  "description": "Backend servisi – oyun koçluğu platformu için API, ödeme, Zoom ve WhatsApp entegrasyonu",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Senin Adın",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.10.0",
+    "twilio": "^4.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
