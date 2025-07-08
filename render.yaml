@@ -5,7 +5,7 @@ services:
     name: game-coaching-backend
     env: node
     plan: free
-    region: frankfurt   # ya da size en yakın bölge
+    region: frankfurt
     buildCommand: cd server && npm install
     startCommand: cd server && npm run start
     envVars:
