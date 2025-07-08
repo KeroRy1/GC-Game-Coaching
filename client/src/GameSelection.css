@@ -1,0 +1,16 @@
+.selection {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--light-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.selection select {
+  background: var(--dark-bg);
+  color: var(--text-main);
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+}
