@@ -31,10 +31,7 @@ app.get('/health', (req, res) => {
 // Shopier webhook endpoint’i
 app.post('/api/webhook/shopier', shopierWebhookHandler);
 
-// (İleride ekleyeceğin diğer route’lar)
-// app.use('/api/users', require('./routes/userRoutes'));
-// app.use('/api/coaches', require('./routes/coachRoutes'));
-
+// Port’u dinle
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Sunucu ${PORT} portunda çalışıyor`);
