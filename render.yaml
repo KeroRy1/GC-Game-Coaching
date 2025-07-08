@@ -1,9 +1,45 @@
+# render.yaml
+
 services:
-  - type: web
-    name: english-coaching
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+  - type: web_service
+    name: game-coaching-backend
+    env: node
+    plan: free
+    region: frankfurt   # ya da size en yakın bölge
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm run start
     envVars:
-      - key: STRIPE_SECRET_KEY
-        value: sk_live_your_real_secret_key_here
+      - key: MONGODB_URI
+        fromSecret: MONGODB_URI
+      - key: JWT_SECRET
+        fromSecret: JWT_SECRET
+      - key: SHOPIER_API_KEY
+        fromSecret: SHOPIER_API_KEY
+      - key: SHOPIER_SECRET
+        fromSecret: SHOPIER_SECRET
+      - key: ZOOM_API_KEY
+        fromSecret: ZOOM_API_KEY
+      - key: ZOOM_API_SECRET
+        fromSecret: ZOOM_API_SECRET
+      - key: TWILIO_ACCOUNT_SID
+        fromSecret: TWILIO_ACCOUNT_SID
+      - key: TWILIO_AUTH_TOKEN
+        fromSecret: TWILIO_AUTH_TOKEN
+      - key: WHATSAPP_FROM
+        fromSecret: WHATSAPP_FROM
+      - key: SMTP_HOST
+        fromSecret: SMTP_HOST
+      - key: SMTP_PORT
+        fromSecret: SMTP_PORT
+      - key: SMTP_USER
+        fromSecret: SMTP_USER
+      - key: SMTP_PASS
+        fromSecret: SMTP_PASS
+
+staticSites:
+  - type: static_site
+    name: game-coaching-client
+    plan: free
+    region: frankfurt
+    buildCommand: cd client && npm install && npm run build
+    publishDirectory: client/build
