@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Oyun Koçluğu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #1e1e1e;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            color: #00ff88;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        select, input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #262626;
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #00ff88;
+            color: #121212;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00cc66;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    🕹 Oyun Koçluğu Platformu
+</header>
+
+<div class="container">
+    <form action="/purchase" method="POST">
+        <label for="game">Oyun Seç</label>
+        <select name="game" id="game" required>
+            <option value="Valorant">Valorant</option>
+            <option value="LoL">League of Legends</option>
+            <option value="CS2">CS2</option>
+            <option value="Apex">Apex Legends</option>
+        </select>
+
+        <label for="level">Seviye Seç</label>
+        <select name="level" id="level" required>
+            <option value="Basit">Basit</option>
+            <option value="Orta">Orta</option>
+            <option value="Pro">Pro</option>
+            <option value="Oyun Ustası">Oyun Ustası</option>
+        </select>
+
+        <label for="time">Saat Seç (08:00 - 19:00)</label>
+        <input type="time" name="time" min="08:00" max="19:00" required>
+
+        <button type="submit">Satın Al</button>
+    </form>
+</div>
+
+</body>
+</html>
