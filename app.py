@@ -3,6 +3,7 @@ from models.db import get_available_coach, update_purchase_status, save_purchase
 from utils.shopier_webhook import verify_shopier_signature
 from utils.whatsapp_notifier import notify_coaches
 from utils.zoom import create_zoom_link
+import os
 
 app = Flask(__name__)
 
@@ -43,5 +44,7 @@ def shopier_webhook():
 
     return "ok", 200
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
