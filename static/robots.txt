@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://gc-game-coaching-1.onrender.com/sitemap.xml
