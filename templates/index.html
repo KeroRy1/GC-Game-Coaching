@@ -148,10 +148,6 @@
   <button class="button" onclick="togglePopup()">Bizimle İletişime Geçin</button>
 </div>
 
-<div id="contact-popup" class="popup">
-  +90 505 571 94 17
-</div>
-
 <div class="container">
   {% for key, p in packages.items() %}
   <div class="card">
@@ -167,14 +163,6 @@
         <option value="" disabled selected>Seçiniz</option>
         {% for game in games %}
           <option value="{{ game }}">{{ game }}</option>
-        {% endfor %}
-      </select>
-
-      <label for="hour-select-{{ key }}">Saat Seç (8-19):</label>
-      <select name="hour" id="hour-select-{{ key }}" required>
-        <option value="" disabled selected>Seçiniz</option>
-        {% for h in hours %}
-          <option value="{{ h }}">{{ h }}:00</option>
         {% endfor %}
       </select>
 
