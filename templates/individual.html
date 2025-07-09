@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tekil Seviye Fiyatları - Oyun Koçluğu Platformu</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #39FF14;
+    }
+    .level-list {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .level-item {
+      background-color: #1f1f1f;
+      padding: 18px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00000066;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .level-name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .level-price {
+      font-size: 18px;
+      color: #39FF14;
+      font-weight: bold;
+    }
+    .button {
+      background-color: #39FF14;
+      color: #000;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 15px;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #2bcc12;
+    }
+    .back-link {
+      display: block;
+      max-width: 400px;
+      margin: 25px auto 0 auto;
+      text-align: center;
+      color: #39FF14;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>Tekil Seviye Fiyatları</header>
+
+<div class="level-list">
+  {% for level, price in levels.items() %}
+    <div class="level-item">
+      <div>
+        <span class="level-name">{{ level }}</span>
+      </div>
+      <div style="display:flex; align-items:center;">
+        <span class="level-price">{{ price }} TL</span>
+        <a href="/buy-level/{{ level }}"><button class="button">Satın Al</button></a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<a href="/" class="back-link">&larr; Ana Sayfaya Dön</a>
+
+</body>
+</html>
