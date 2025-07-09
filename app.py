@@ -99,6 +99,11 @@ def shopier_callback():
     order_id = request.form.get("platform_order_id")
     flash("Ödeme alındı. Teşekkürler!", "success")
     return redirect(url_for("index"))
+    
+@app.route('/individual')
+def individual():
+    return render_template("individual.html", levels=individual_levels)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
