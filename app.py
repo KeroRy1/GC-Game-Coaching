@@ -35,17 +35,32 @@ individual_levels = {
     "Oyun Ustası": 650
 }
 
-# Basit geri bildirim deposu
+# Oyunlar
+games = ["Apex", "Valorant", "LoL", "CS2"]
+
+# Saatler 8-19
+hours = list(range(8, 20))
+
+# Geri bildirim listesi
 feedbacks = []
 
 @app.route('/')
 def index():
-    return render_template("index.html", packages=packages, levels=individual_levels, feedbacks=feedbacks)
+    return render_template("index.html", packages=packages, levels=individual_levels,
+                           feedbacks=feedbacks, games=games, hours=hours)
 
-@app.route('/buy/<package_key>')
-def buy_package(package_key):
-    if package_key not in packages:
-        flash("Geçersiz paket.", "danger")
+@app.route('/individual')
+def individual():
+    return render_template("individual.html", levels=individual_levels, games=games, hours=hours)
+
+@app.route('/buy', methods=['POST'])
+def buy():
+    package_key = request.form.get('package_key')
+    game = request.form.get('game')
+    hour = request.form.get('hour')
+
+    if package_key not in packages or game not in games or not hour or not hour.isdigit() or int(hour) not in hours:
+        flash("Geçersiz paket, oyun veya saat seçimi.", "danger")
         return redirect(url_for('index'))
 
     package = packages[package_key]
@@ -54,9 +69,11 @@ def buy_package(package_key):
     data = f"{SHOPIER_API_KEY}{order_id}"
     signature = base64.b64encode(hmac.new(SHOPIER_API_SECRET.encode(), data.encode(), hashlib.sha256).digest()).decode()
 
+    product_name = f"{package['name']} - {game} - Saat: {hour}:00"
+
     return render_template("pay.html", shopier_url=SHOPIER_URL,
                            order_id=order_id,
-                           product_name=package["name"],
+                           product_name=product_name,
                            price=package["price"],
                            api_key=SHOPIER_API_KEY,
                            signature=signature,
@@ -64,11 +81,15 @@ def buy_package(package_key):
                            buyer_surname="Karaman",
                            buyer_email="mail@example.com")
 
-@app.route('/buy-level/<level>')
-def buy_level(level):
-    if level not in individual_levels:
-        flash("Geçersiz seviye.", "danger")
-        return redirect(url_for('index'))
+@app.route('/buy-level', methods=['POST'])
+def buy_level():
+    level = request.form.get('level')
+    game = request.form.get('game')
+    hour = request.form.get('hour')
+
+    if level not in individual_levels or game not in games or not hour or not hour.isdigit() or int(hour) not in hours:
+        flash("Geçersiz seviye, oyun veya saat seçimi.", "danger")
+        return redirect(url_for('individual'))
 
     price = individual_levels[level]
     order_id = str(uuid.uuid4())
@@ -76,9 +97,11 @@ def buy_level(level):
     data = f"{SHOPIER_API_KEY}{order_id}"
     signature = base64.b64encode(hmac.new(SHOPIER_API_SECRET.encode(), data.encode(), hashlib.sha256).digest()).decode()
 
+    product_name = f"{level} - {game} - Saat: {hour}:00"
+
     return render_template("pay.html", shopier_url=SHOPIER_URL,
                            order_id=order_id,
-                           product_name=level,
+                           product_name=product_name,
                            price=price,
                            api_key=SHOPIER_API_KEY,
                            signature=signature,
@@ -99,11 +122,6 @@ def shopier_callback():
     order_id = request.form.get("platform_order_id")
     flash("Ödeme alındı. Teşekkürler!", "success")
     return redirect(url_for("index"))
-    
-@app.route('/individual')
-def individual():
-    return render_template("individual.html", levels=individual_levels)
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
