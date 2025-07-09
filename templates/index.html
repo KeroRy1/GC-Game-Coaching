@@ -11,7 +11,6 @@
       font-family: Arial, sans-serif;
       margin: 0;
     }
-
     header {
       text-align: center;
       padding: 20px;
@@ -19,14 +18,14 @@
       font-weight: bold;
       background-color: #1e1e1e;
     }
-
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
     .button {
       background-color: #39FF14;
       color: #000;
@@ -40,45 +39,47 @@
     .button:hover {
       background-color: #2bcc12;
     }
-
     .container {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px; /* paketler arası mesafe azaltıldı */
-      justify-content: center; /* paketleri ortaya hizaladım */
+      gap: 10px;
+      justify-content: center;
       padding: 20px;
     }
-
     .card {
       background-color: #1f1f1f;
       border-radius: 10px;
       padding: 20px;
       width: 300px;
       box-shadow: 0 0 10px #00000066;
-      margin: 5px; /* paket kartları birbirine daha yakın */
+      margin: 5px;
     }
-
     .card h3 {
       color: #39FF14;
       margin-bottom: 10px;
     }
-
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+    }
     .center-button {
       text-align: center;
       margin: 25px 0;
     }
-
-    .center-button a {
-      text-decoration: none;
-    }
-
     .info-text {
       text-align: center;
       margin-top: 40px;
       font-style: italic;
-      font-size: 17px; /* biraz büyüttüm */
+      font-size: 17px;
     }
-
     .popup {
       display: none;
       position: fixed;
@@ -91,20 +92,16 @@
       color: #39FF14;
       font-weight: bold;
     }
-
     .feedbacks {
       margin-top: 40px;
       padding: 10px 20px;
     }
-
     .feedbacks li {
       background-color: #1e1e1e;
       margin-bottom: 5px;
       padding: 8px;
       border-radius: 5px;
     }
-
-    /* Tekil al butonu sağ üstte */
     .top-bar .tekil-button {
       background-color: #39FF14;
       color: #000;
@@ -118,11 +115,14 @@
     .top-bar .tekil-button:hover {
       background-color: #2bcc12;
     }
-
     @media(max-width: 768px) {
       .container {
         flex-direction: column;
         align-items: center;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   </style>
@@ -138,7 +138,7 @@
 <header>Oyun Koçluğu Platformu</header>
 
 <div class="top-bar">
-  <form action="/feedback" method="POST" style="flex-grow:1;">
+  <form action="/feedback" method="POST" style="flex-grow:1; min-width: 250px;">
     <input type="text" name="feedback" placeholder="Geri Bildirim Yaz" required style="width:70%; padding:6px; border-radius:4px; border:none;"/>
     <button class="button" type="submit">Gönder</button>
   </form>
@@ -158,7 +158,28 @@
     <h3>{{ p.name }}</h3>
     <p>Seviyeler: {{ p.levels | join(', ') }}</p>
     <p><strong>Fiyat:</strong> {{ p.price }} TL</p>
-    <a href="/buy/{{ key }}"><button class="button">Satın Al</button></a>
+
+    <form action="/buy" method="POST">
+      <input type="hidden" name="package_key" value="{{ key }}">
+
+      <label for="game-select-{{ key }}">Oyun Seç:</label>
+      <select name="game" id="game-select-{{ key }}" required>
+        <option value="" disabled selected>Seçiniz</option>
+        {% for game in games %}
+          <option value="{{ game }}">{{ game }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="hour-select-{{ key }}">Saat Seç (8-19):</label>
+      <select name="hour" id="hour-select-{{ key }}" required>
+        <option value="" disabled selected>Seçiniz</option>
+        {% for h in hours %}
+          <option value="{{ h }}">{{ h }}:00</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="button" style="margin-top:10px;">Satın Al</button>
+    </form>
   </div>
   {% endfor %}
 </div>
