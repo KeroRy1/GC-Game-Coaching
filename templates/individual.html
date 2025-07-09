@@ -42,6 +42,19 @@
       color: #39FF14;
       font-weight: bold;
     }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
     .button {
       background-color: #39FF14;
       color: #000;
@@ -76,20 +89,42 @@
 <header>Tekil Seviye Fiyatları</header>
 
 <div class="level-list">
-  {% for level, price in levels.items() %}
+  <form action="/buy-level" method="POST">
+    <label for="game-select-level">Oyun Seç:</label>
+    <select name="game" id="game-select-level" required>
+      <option value="" disabled selected>Seçiniz</option>
+      {% for game in games %}
+        <option value="{{ game }}">{{ game }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="hour-select-level">Saat Seç (8-19):</label>
+    <select name="hour" id="hour-select-level" required>
+      <option value="" disabled selected>Seçiniz</option>
+      {% for h in hours %}
+        <option value="{{ h }}">{{ h }}:00</option>
+      {% endfor %}
+    </select>
+
+    {% for level, price in levels.items() %}
     <div class="level-item">
       <div>
         <span class="level-name">{{ level }}</span>
       </div>
       <div style="display:flex; align-items:center;">
         <span class="level-price">{{ price }} TL</span>
-        <a href="/buy-level/{{ level }}"><button class="button">Satın Al</button></a>
+        <button type="submit" name="level" value="{{ level }}" class="button" style="margin-left:15px;">Satın Al</button>
       </div>
     </div>
-  {% endfor %}
+    {% endfor %}
+  </form>
 </div>
 
 <a href="/" class="back-link">&larr; Ana Sayfaya Dön</a>
+
+</body>
+</html>
+
 
 </body>
 </html>
