@@ -19,12 +19,12 @@ TWILIO_WHATSAPP_NUMBER = os.getenv("TWILIO_WHATSAPP_NUMBER")
 ADMIN_NUMBERS = os.getenv("ADMIN_NUMBERS", "+905055719417").split(",")
 client = Client(TWILIO_SID, TWILIO_TOKEN)
 
-games = ["Valorant", "CS2", "LoL", "Apex"]
+games = ["Valorant", "CS2", "LoL", "Apex","TF2"]
 packages = [
-    {"name": "Basit", "price_tl": 660},
-    {"name": "Orta", "price_tl": 880},
-    {"name": "Pro", "price_tl": 1150},
-    {"name": "Oyun Ustasi", "price_tl": 1560}
+    {"name": "Basit", "price_tl": 500},
+    {"name": "Orta", "price_tl": 600},
+    {"name": "Pro", "price_tl": 700},
+    {"name": "Oyun Ustasi", "price_tl": 750}
 ]
 feedbacks = []
 
