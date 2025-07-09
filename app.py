@@ -4,11 +4,12 @@ import hashlib
 import hmac
 import base64
 import uuid
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-# Shopier bilgileri
+# Shopier bilgileri (bunları kendi bilgilerinle değiştir)
 SHOPIER_API_KEY = 'YOUR_API_KEY'
 SHOPIER_API_SECRET = 'YOUR_API_SECRET'
 SHOPIER_URL = 'https://www.shopier.com/ShowProduct/api_pay4.php'
@@ -38,11 +39,15 @@ individual_levels = {
 # Oyunlar
 games = ["Apex", "Valorant", "LoL", "CS2"]
 
-# Saatler 8-19
+# Saatler 8-19 (tekil seviyeler için)
 hours = list(range(8, 20))
 
 # Geri bildirim listesi
 feedbacks = []
+
+# Kullanıcıların satın aldıkları paket ve başlangıç tarihleri
+# Basit örnek olarak, gerçek projede veritabanı olmalı
+user_packages = {}
 
 @app.route('/')
 def index():
@@ -57,10 +62,15 @@ def individual():
 def buy():
     package_key = request.form.get('package_key')
     game = request.form.get('game')
-    hour = request.form.get('hour')
 
-    if package_key not in packages or game not in games or not hour or not hour.isdigit() or int(hour) not in hours:
-        flash("Geçersiz paket, oyun veya saat seçimi.", "danger")
+    if package_key not in packages or game not in games:
+        flash("Geçersiz paket veya oyun seçimi.", "danger")
+        return redirect(url_for('index'))
+
+    # Saat kontrolü: şimdi saat 19:00'dan sonrası ise uyarı ver
+    now_hour = datetime.now().hour
+    if now_hour >= 19:
+        flash("Saat 19:00'dan sonra paket satın alma mümkün değil. Lütfen 08:00-19:00 arası tekrar deneyin.", "warning")
         return redirect(url_for('index'))
 
     package = packages[package_key]
@@ -69,7 +79,15 @@ def buy():
     data = f"{SHOPIER_API_KEY}{order_id}"
     signature = base64.b64encode(hmac.new(SHOPIER_API_SECRET.encode(), data.encode(), hashlib.sha256).digest()).decode()
 
-    product_name = f"{package['name']} - {game} - Saat: {hour}:00"
+    product_name = f"{package['name']} - {game}"
+
+    # Burada kullanıcıya paket satın alma tarihi atıyoruz (örnek, kullanıcı id yok ama varsayıyoruz 'user1')
+    # Gerçek projede kullanıcı id veya session ile yönetilecek
+    user_packages['user1'] = {
+        'package': package_key,
+        'start_date': datetime.now(),
+        'valid_until': datetime.now() + timedelta(days=30)
+    }
 
     return render_template("pay.html", shopier_url=SHOPIER_URL,
                            order_id=order_id,
@@ -126,3 +144,4 @@ def shopier_callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
