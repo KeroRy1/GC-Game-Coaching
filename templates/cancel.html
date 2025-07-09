@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme Başarısız</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ff4f4f;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+        p {
+            font-size: 1.3rem;
+            margin-top: 20px;
+            color: #ccc;
+        }
+        a {
+            margin-top: 30px;
+            display: inline-block;
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>❌ Ödeme Başarısız</h1>
+    <p>{{ error }}</p>
+    <a href="{{ url_for('index') }}">Ana sayfaya dön</a>
+</body>
+</html>
