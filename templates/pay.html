@@ -1,11 +1,68 @@
-<form method="post" action="{{ shopier_url }}">
-  <input type="hidden" name="API_key" value="{{ api_key }}">
-  <input type="hidden" name="platform_order_id" value="{{ order_id }}">
-  <input type="hidden" name="product_name" value="{{ product_name }}">
-  <input type="hidden" name="buyer_name" value="{{ buyer_name }}">
-  <input type="hidden" name="buyer_surname" value="{{ buyer_surname }}">
-  <input type="hidden" name="buyer_email" value="{{ buyer_email }}">
-  <input type="hidden" name="signature" value="{{ signature }}">
-  <input type="hidden" name="price" value="{{ price }}">
-  <button type="submit">Shopier ile Ödeme Yap ({{ price }} TL)</button>
-</form>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ödeme Sayfası</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .payment-container {
+      background-color: #1f1f1f;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #00000099;
+      text-align: center;
+      width: 320px;
+    }
+    h2 {
+      color: #39FF14;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #39FF14;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #2bcc12;
+    }
+  </style>
+</head>
+<body>
+
+<div class="payment-container">
+  <h2>Ödeme Yap</h2>
+  <p>Ürün: <strong>{{ product_name }}</strong></p>
+  <p>Fiyat: <strong>{{ price }} TL</strong></p>
+
+  <form method="post" action="{{ shopier_url }}">
+    <input type="hidden" name="API_key" value="{{ api_key }}">
+    <input type="hidden" name="platform_order_id" value="{{ order_id }}">
+    <input type="hidden" name="product_name" value="{{ product_name }}">
+    <input type="hidden" name="buyer_name" value="{{ buyer_name }}">
+    <input type="hidden" name="buyer_surname" value="{{ buyer_surname }}">
+    <input type="hidden" name="buyer_email" value="{{ buyer_email }}">
+    <input type="hidden" name="signature" value="{{ signature }}">
+    <input type="hidden" name="price" value="{{ price }}">
+    <button type="submit">Shopier ile Ödeme Yap ({{ price }} TL)</button>
+  </form>
+</div>
+
+</body>
+</html>
