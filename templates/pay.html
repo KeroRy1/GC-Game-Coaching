@@ -1,10 +1,11 @@
 <form method="post" action="{{ shopier_url }}">
-    <input type="hidden" name="API_key" value="{{ api_key }}">
-    <input type="hidden" name="platform_order_id" value="{{ order_id }}">
-    <input type="hidden" name="product_name" value="{{ package.name }}">
-    <input type="hidden" name="buyer_name" value="{{ buyer_name }}">
-    <input type="hidden" name="buyer_surname" value="{{ buyer_surname }}">
-    <input type="hidden" name="buyer_email" value="{{ buyer_email }}">
-    <input type="hidden" name="signature" value="{{ signature }}">
-    <button type="submit">Shopier ile Öde ({{ package.price }} TL)</button>
+  <input type="hidden" name="API_key" value="{{ api_key }}">
+  <input type="hidden" name="platform_order_id" value="{{ order_id }}">
+  <input type="hidden" name="product_name" value="{{ product_name }}">
+  <input type="hidden" name="buyer_name" value="{{ buyer_name }}">
+  <input type="hidden" name="buyer_surname" value="{{ buyer_surname }}">
+  <input type="hidden" name="buyer_email" value="{{ buyer_email }}">
+  <input type="hidden" name="signature" value="{{ signature }}">
+  <input type="hidden" name="price" value="{{ price }}">
+  <button type="submit">Ödeme Yap ({{ price }} TL)</button>
 </form>
